@@ -12300,7 +12300,7 @@ Ensure that you have executed the code block once you are done. You'll know the 
 </ol>
 <p>By Iteration 1~3, grid search can select optimal parameters.</p>
 <p>When grid search is applicable?</p>
-<p>If we need parameter tuning under certain estimator(machine learning algorithm) and score function, we can use grid search. Grid search will find appropriate parameter from given parameter set.</p>
+<p>If we need parameter tuning under certain estimator(machine learning algorithm) and score function ans few parameter sets, we can use grid search. Grid search will find appropriate parameter from given few parameter sets.</p>
 
 </div>
 </div>
@@ -14047,7 +14047,11 @@ Final model has an optimal max_depth parameter of 4
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> 5</p>
+<p><strong>Answer: </strong></p>
+<p><em>Using grid search on the entire dataset, what is the optimal <code>max_depth</code> parameter for your model?</em><br>
+5</p>
+<p><em>How does this result compare to your intial intuition?</em><br>
+By intuition, i think as <code>max_depth</code> increases, accuracy also will increases. But result is not. The optimal <code>max_depth</code> is 5. This result is because our model overfitting to train dataset. As increase <code>max_depth</code>, our model more fitted to train dataset. And as a result, that model's general accuracy fall down.</p>
 
 </div>
 </div>
