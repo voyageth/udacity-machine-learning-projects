@@ -13710,19 +13710,19 @@ SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>1. clf_A
 Training a LogisticRegression using a training set size of 100. . .
-Trained model in 0.0012 seconds
+Trained model in 0.0336 seconds
 Made predictions in 0.0002 seconds.
 F1 score for training set: 0.8671.
-Made predictions in 0.0001 seconds.
+Made predictions in 0.0002 seconds.
 F1 score for test set: 0.7068.
 Training a LogisticRegression using a training set size of 200. . .
 Trained model in 0.0016 seconds
-Made predictions in 0.0002 seconds.
-F1 score for training set: 0.8211.
 Made predictions in 0.0001 seconds.
+F1 score for training set: 0.8211.
+Made predictions in 0.0002 seconds.
 F1 score for test set: 0.7391.
 Training a LogisticRegression using a training set size of 300. . .
-Trained model in 0.0024 seconds
+Trained model in 0.0029 seconds
 Made predictions in 0.0002 seconds.
 F1 score for training set: 0.8512.
 Made predictions in 0.0001 seconds.
@@ -13730,18 +13730,18 @@ F1 score for test set: 0.7500.
 2. clf_B
 Training a GaussianNB using a training set size of 100. . .
 Trained model in 0.0005 seconds
-Made predictions in 0.0003 seconds.
+Made predictions in 0.0002 seconds.
 F1 score for training set: 0.7752.
 Made predictions in 0.0002 seconds.
 F1 score for test set: 0.6457.
 Training a GaussianNB using a training set size of 200. . .
 Trained model in 0.0006 seconds
-Made predictions in 0.0003 seconds.
+Made predictions in 0.0002 seconds.
 F1 score for training set: 0.8060.
 Made predictions in 0.0002 seconds.
 F1 score for test set: 0.7218.
 Training a GaussianNB using a training set size of 300. . .
-Trained model in 0.0007 seconds
+Trained model in 0.0006 seconds
 Made predictions in 0.0003 seconds.
 F1 score for training set: 0.8134.
 Made predictions in 0.0002 seconds.
@@ -13751,19 +13751,19 @@ Training a SVC using a training set size of 100. . .
 Trained model in 0.0011 seconds
 Made predictions in 0.0007 seconds.
 F1 score for training set: 0.8354.
-Made predictions in 0.0006 seconds.
+Made predictions in 0.0007 seconds.
 F1 score for test set: 0.8025.
 Training a SVC using a training set size of 200. . .
-Trained model in 0.0031 seconds
-Made predictions in 0.0023 seconds.
+Trained model in 0.0032 seconds
+Made predictions in 0.0022 seconds.
 F1 score for training set: 0.8431.
-Made predictions in 0.0012 seconds.
+Made predictions in 0.0011 seconds.
 F1 score for test set: 0.8105.
 Training a SVC using a training set size of 300. . .
-Trained model in 0.0059 seconds
-Made predictions in 0.0044 seconds.
+Trained model in 0.0057 seconds
+Made predictions in 0.0043 seconds.
 F1 score for training set: 0.8664.
-Made predictions in 0.0015 seconds.
+Made predictions in 0.0018 seconds.
 F1 score for test set: 0.8052.
 </pre>
 </div>
@@ -13906,7 +13906,7 @@ F1 score for test set: 0.8052.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[81]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="n">clf_C</span>
@@ -13928,10 +13928,10 @@ F1 score for test set: 0.8052.
   max_iter=-1, probability=False, random_state=1, shrinking=True,
   tol=0.001, verbose=False)
 Training a SVC using a training set size of 300. . .
-Trained model in 0.1260 seconds
-Made predictions in 0.0067 seconds.
+Trained model in 0.0087 seconds
+Made predictions in 0.0060 seconds.
 F1 score for training set: 0.8664.
-Made predictions in 0.0039 seconds.
+Made predictions in 0.0015 seconds.
 F1 score for test set: 0.8052.
 </pre>
 </div>
@@ -13976,9 +13976,8 @@ F1 score for test set: 0.8052.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> In SVM(support vector machine) model, it try to find one line(or plane) that divide all dataset into two class. These lines(or planes) are can various. With traing datas, SVM trying to find one line(or plane) that distance from that line(or place) to any class is largest.</p>
-<p>SVM use kernel fuction is avoid lineary nonseparable data problem. Kernel fuction is some mapping function that mapping traing data to hyperplane. In that hyperplane maybe that data set can be linearly separable. sklearn's SVM provide various kernel functions(lineray, poly, rbf, sigmoid). But we can provide custom kernel function also.</p>
-<p>So, with traing data set, SVM model find some hyperplane that can divide data set into two classes. That hyperplane will as wide as possible from two classes. After that work, we can predict test data set's label by that feature vector placed on which side of SVM model's hyperplane.</p>
+<p><strong>Answer: </strong> In SVM(support vector machine) model, it try to find one divider that divide all dataset into two class. This divider is can various. With traing datas, SVM trying to find one divider that distance from that divider to any class is largest.</p>
+<p>So, with traing data set, SVM model find some divider that can divide data set into two classes. This divider will have the largest margin from the two classes. After that work, we can predict test data set's label by that feature vector placed on which side of SVM model's divider.</p>
 
 </div>
 </div>
@@ -14070,7 +14069,7 @@ f1_score(y_true, y_pred, average=None)</code></p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Import &#39;gridSearchCV&#39; and &#39;make_scorer&#39;</span>
@@ -14122,12 +14121,12 @@ f1_score(y_true, y_pred, average=None)</code></p>
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-  decision_function_shape=None, degree=2, gamma=0.1, kernel=&#39;rbf&#39;,
+  decision_function_shape=None, degree=3, gamma=0.1, kernel=&#39;rbf&#39;,
   max_iter=-1, probability=False, random_state=None, shrinking=True,
-  tol=0.1, verbose=False)
-Made predictions in 0.0057 seconds.
+  tol=0.03, verbose=False)
+Made predictions in 0.0058 seconds.
 Tuned model has a training F1 score of 0.9781.
-Made predictions in 0.0019 seconds.
+Made predictions in 0.0020 seconds.
 Tuned model has a testing F1 score of 0.8258.
 </pre>
 </div>
