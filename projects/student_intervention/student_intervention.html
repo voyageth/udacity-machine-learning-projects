@@ -13710,33 +13710,33 @@ SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>1. clf_A
 Training a LogisticRegression using a training set size of 100. . .
-Trained model in 0.0336 seconds
+Trained model in 0.0071 seconds
 Made predictions in 0.0002 seconds.
 F1 score for training set: 0.8671.
-Made predictions in 0.0002 seconds.
+Made predictions in 0.0001 seconds.
 F1 score for test set: 0.7068.
 Training a LogisticRegression using a training set size of 200. . .
 Trained model in 0.0016 seconds
-Made predictions in 0.0001 seconds.
-F1 score for training set: 0.8211.
 Made predictions in 0.0002 seconds.
+F1 score for training set: 0.8211.
+Made predictions in 0.0001 seconds.
 F1 score for test set: 0.7391.
 Training a LogisticRegression using a training set size of 300. . .
-Trained model in 0.0029 seconds
-Made predictions in 0.0002 seconds.
+Trained model in 0.0021 seconds
+Made predictions in 0.0001 seconds.
 F1 score for training set: 0.8512.
 Made predictions in 0.0001 seconds.
 F1 score for test set: 0.7500.
 2. clf_B
 Training a GaussianNB using a training set size of 100. . .
-Trained model in 0.0005 seconds
+Trained model in 0.0006 seconds
 Made predictions in 0.0002 seconds.
 F1 score for training set: 0.7752.
 Made predictions in 0.0002 seconds.
 F1 score for test set: 0.6457.
 Training a GaussianNB using a training set size of 200. . .
-Trained model in 0.0006 seconds
-Made predictions in 0.0002 seconds.
+Trained model in 0.0005 seconds
+Made predictions in 0.0003 seconds.
 F1 score for training set: 0.8060.
 Made predictions in 0.0002 seconds.
 F1 score for test set: 0.7218.
@@ -13748,22 +13748,22 @@ Made predictions in 0.0002 seconds.
 F1 score for test set: 0.7761.
 3. clf_C
 Training a SVC using a training set size of 100. . .
-Trained model in 0.0011 seconds
+Trained model in 0.0010 seconds
 Made predictions in 0.0007 seconds.
 F1 score for training set: 0.8354.
 Made predictions in 0.0007 seconds.
 F1 score for test set: 0.8025.
 Training a SVC using a training set size of 200. . .
-Trained model in 0.0032 seconds
-Made predictions in 0.0022 seconds.
+Trained model in 0.0031 seconds
+Made predictions in 0.0023 seconds.
 F1 score for training set: 0.8431.
 Made predictions in 0.0011 seconds.
 F1 score for test set: 0.8105.
 Training a SVC using a training set size of 300. . .
 Trained model in 0.0057 seconds
-Made predictions in 0.0043 seconds.
+Made predictions in 0.0042 seconds.
 F1 score for training set: 0.8664.
-Made predictions in 0.0018 seconds.
+Made predictions in 0.0014 seconds.
 F1 score for test set: 0.8052.
 </pre>
 </div>
@@ -13928,8 +13928,8 @@ F1 score for test set: 0.8052.
   max_iter=-1, probability=False, random_state=1, shrinking=True,
   tol=0.001, verbose=False)
 Training a SVC using a training set size of 300. . .
-Trained model in 0.0087 seconds
-Made predictions in 0.0060 seconds.
+Trained model in 0.0064 seconds
+Made predictions in 0.0044 seconds.
 F1 score for training set: 0.8664.
 Made predictions in 0.0015 seconds.
 F1 score for test set: 0.8052.
@@ -13976,8 +13976,13 @@ F1 score for test set: 0.8052.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> In SVM(support vector machine) model, it try to find one divider that divide all dataset into two class. This divider is can various. With traing datas, SVM trying to find one divider that distance from that divider to any class is largest.</p>
-<p>So, with traing data set, SVM model find some divider that can divide data set into two classes. This divider will have the largest margin from the two classes. After that work, we can predict test data set's label by that feature vector placed on which side of SVM model's divider.</p>
+<p><strong>Answer: </strong> In SVM(support vector machine) model, it try to find one divider that divide all dataset into two class. With traing datas, SVM trying to find one divider that distance from that divider to any class is largest [Fig1].</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Svm_max_sep_hyperplane_with_margin.png" width="200" alt="SVM margin"></p>
+<div width="100%" style="text-align:center"><a href="https://en.wikipedia.org/wiki/Support_vector_machine">Fig1. image from wikipedia</a></div><p>SVM use some internal function(kernel) that mapping features to higher dimension [Fig2, Fig3]. Using that function, SVM can make problem more easy one.
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Kernel_Machine.svg" width="400" alt="kernel"></p>
+<div width="100%" style="text-align:center"><a href="https://en.wikipedia.org/wiki/Support_vector_machine">Fig2. image from wikipedia</a></div>
+<img src="https://udacity-github-sync-content.s3.amazonaws.com/_imgs/372/1467112001/kernel3.jpg" width="400" alt="kernel">
+<div width="100%" style="text-align:center"><a href="https://en.wikipedia.org/wiki/Support_vector_machine">Fig3. image from previous review</a></div><p>So, with traing data set, SVM model mapping features to higher dimension. And find some divider that can divide data set into two classes. This divider will have the largest margin from the two classes. After that work, we can predict test data set's label by that feature vector placed on which side of SVM model's divider.</p>
 
 </div>
 </div>
@@ -14121,12 +14126,12 @@ f1_score(y_true, y_pred, average=None)</code></p>
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-  decision_function_shape=None, degree=3, gamma=0.1, kernel=&#39;rbf&#39;,
+  decision_function_shape=None, degree=2, gamma=0.1, kernel=&#39;rbf&#39;,
   max_iter=-1, probability=False, random_state=None, shrinking=True,
   tol=0.03, verbose=False)
-Made predictions in 0.0058 seconds.
+Made predictions in 0.0052 seconds.
 Tuned model has a training F1 score of 0.9781.
-Made predictions in 0.0020 seconds.
+Made predictions in 0.0017 seconds.
 Tuned model has a testing F1 score of 0.8258.
 </pre>
 </div>
