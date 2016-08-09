@@ -1,16 +1,18 @@
-import random
 from environment import Agent, Environment
 from planner import RoutePlanner
 from simulator import Simulator
+
 
 class LearningAgent(Agent):
     """An agent that learns to drive in the smartcab world."""
 
     def __init__(self, env):
-        super(LearningAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
+        super(LearningAgent, self).__init__(
+            env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
         # TODO: Initialize any additional variables here
+        self.actions = [None, 'forward', 'left', 'right']
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
@@ -23,16 +25,45 @@ class LearningAgent(Agent):
         deadline = self.env.get_deadline(self)
 
         # TODO: Update state
-        
+        if inputs.get('light') == 'green':
+            oncoming = inputs.get('oncoming')
+            if oncoming == None or oncoming == 'left':
+                self.state = 'GREEN_CAN_LEFT'  # None, 'forward', 'right', 'left'
+            else:
+                self.state = 'GREEN_CANT_LEFT'  # None, 'forward', 'right'
+        else:
+            if inputs.get('left') != 'forward':
+                self.state = 'RED_CAN_RIGHT'  # None, 'right'
+            else:
+                self.state = 'RED_CANT_RIGHT'  # None
+        print inputs  # {'light': 'red', 'oncoming': None, 'right': None, 'left': None}
+
         # TODO: Select action according to your policy
-        action = None
+        if self.next_waypoint == 'forward':
+            if self.state == 'GREEN_CAN_LEFT' or self.state == 'GREEN_CANT_LEFT':
+                action = 'forward'
+            else:
+                action = None
+        elif self.next_waypoint == 'left':
+            if self.state == 'GREEN_CAN_LEFT':
+                action = 'left'
+            else:
+                action = None
+        elif self.next_waypoint == 'right':
+            if self.state == 'GREEN_CAN_LEFT' or self.state == 'GREEN_CANT_LEFT' or self.state == 'RED_CAN_RIGHT':
+                action = 'right'
+            else:
+                action = None
+        else:
+            action = None
 
         # Execute action and get reward
         reward = self.env.act(self, action)
 
         # TODO: Learn policy based on state, action, reward
 
-        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}" \
+            .format(deadline, inputs, action, reward)  # [debug]
 
 
 def run():
@@ -41,7 +72,7 @@ def run():
     # Set up environment and agent
     e = Environment()  # create environment (also adds some dummy traffic)
     a = e.create_agent(LearningAgent)  # create agent
-    e.set_primary_agent(a, enforce_deadline=True)  # specify agent to track
+    e.set_primary_agent(a, enforce_deadline=False)  # specify agent to track
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
     # Now simulate it
