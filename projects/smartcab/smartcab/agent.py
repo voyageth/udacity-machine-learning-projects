@@ -2,6 +2,7 @@ import random
 
 import numpy as np
 import pandas as pd
+from scipy.spatial import distance as dt
 
 from environment import Agent, Environment
 from planner import RoutePlanner
@@ -45,7 +46,19 @@ class LearningAgent(Agent):
         self.q_values = pd.DataFrame(np.zeros((len(self.available_states), len(column_names))),
                                      columns=column_names)
         self.learning_count = 1
-        self.gamma = 0.1
+        self.learning_count_delta = 1
+        self.gamma = 0.25
+
+        self.deadline = 0
+        self.current_deadline = 0
+        self.distance = 0
+        self.total_reward = 0
+
+        self.trial = -1
+        self.learn_results = pd.DataFrame(np.zeros((100, 5)),
+                                          columns=["distance", "currentDeadline", "initialDeadline", "usedStep",
+                                                   "totalReward"])
+        print self.learn_results
 
     def get_current_q_value(self, state, action):
         state_index = self.available_states.index(state)
@@ -100,6 +113,12 @@ class LearningAgent(Agent):
     def reset(self, destination=None):
         self.planner.route_to(destination)
         # TODO: Prepare for a new trip; reset any variables here, if required
+        agent_state = self.env.agent_states[self.env.primary_agent]
+        self.distance = dt.euclidean(agent_state.get("destination"), agent_state.get("location"))
+        self.deadline = agent_state.get("deadline")
+        self.current_deadline = self.deadline
+        self.total_reward = 0
+        self.trial += 1
 
     def update(self, t):
         # Gather inputs
@@ -118,9 +137,13 @@ class LearningAgent(Agent):
         else:
             # use q_values
             action = self.find_max_q_value_action_in_state(self.state)
+        # action = random.choice(self.available_actions)
 
         # Execute action and get reward
         reward = self.env.act(self, action)
+
+        self.current_deadline = self.env.agent_states[self.env.primary_agent].get("deadline")
+        self.total_reward += reward
 
         # Learn policy based on state, action, reward
         next_state_inputs = self.env.sense(self)
@@ -130,10 +153,23 @@ class LearningAgent(Agent):
         new_q_value = ((1 - learning_rate) * self.get_current_q_value(self.state, action)) + (
             learning_rate * (reward + self.gamma * self.find_max_q_value_in_state(next_state)))
         self.set_q_value(self.state, action, new_q_value)
-        self.learning_count += 1
+        self.learning_count += self.learning_count_delta
+        # print "LearningAgent.update(): deadline = {}, inputs = {}, state = {}, action = {}, reward = {}".format(
+        #     deadline, inputs, self.state, action, reward)  # [debug]
 
-        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}" \
-            .format(deadline, inputs, action, reward)  # [debug]
+        self.learn_results.set_value(self.trial, "distance", self.distance)
+        self.learn_results.set_value(self.trial, "currentDeadline", self.current_deadline)
+        self.learn_results.set_value(self.trial, "initialDeadline", self.deadline)
+        self.learn_results.set_value(self.trial, "usedStep", (self.deadline - self.current_deadline))
+        self.learn_results.set_value(self.trial, "totalReward", self.total_reward)
+
+        if self.trial == 99 and self.env.done:
+            print "{} {} {} {} {} {} {}".format(self.learning_count_delta, self.gamma, self.epsilon,
+                                                self.learn_results["distance"].mean(),
+                                                self.learn_results["initialDeadline"].mean(),
+                                                self.learn_results["usedStep"].mean(),
+                                                self.learn_results["totalReward"].mean())
+            print self.q_values
 
 
 def run():
@@ -142,11 +178,12 @@ def run():
     # Set up environment and agent
     e = Environment()  # create environment (also adds some dummy traffic)
     a = e.create_agent(LearningAgent)  # create agent
-    e.set_primary_agent(a, enforce_deadline=False)  # specify agent to track
+    e.set_primary_agent(a, enforce_deadline=True)  # specify agent to track
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0.5, display=True)  # create simulator (uses pygame when display=True, if available)
+    sim = Simulator(e, update_delay=0.001,
+                    display=False)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
     sim.run(n_trials=100)  # run for a specified number of trials
