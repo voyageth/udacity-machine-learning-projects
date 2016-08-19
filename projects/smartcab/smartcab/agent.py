@@ -48,7 +48,6 @@ class LearningAgent(Agent):
 
         # big penalty when ignore rule of the road
         big_penalty_value = -100
-        # None, forward, left, right
         self.set_q_value('GREEN_CANT_LEFT_NEXT_NONE', 'left', big_penalty_value)
         self.set_q_value('GREEN_CANT_LEFT_NEXT_FORWARD', 'left', big_penalty_value)
         self.set_q_value('GREEN_CANT_LEFT_NEXT_LEFT', 'left', big_penalty_value)
@@ -197,12 +196,9 @@ class LearningAgent(Agent):
         next_waypoint_after_move = self.planner.next_waypoint()
         next_state = self.calculate_state(next_state_inputs, next_waypoint_after_move)
         learning_rate = 1 / float(self.learning_count)
+        new_reward = float(reward) / float(max(self.deadline - self.current_deadline, 1)) * 10
         new_q_value = ((1 - learning_rate) * self.get_current_q_value(self.state, action)) + (
-            learning_rate * (
-                (
-                    reward / (
-                        max(self.deadline - self.current_deadline, 1))) + self.gamma * self.find_max_q_value_in_state(
-                    next_state)))
+            learning_rate * (new_reward + self.gamma * self.find_max_q_value_in_state(next_state)))
         self.set_q_value(self.state, action, new_q_value)
         self.learning_count += self.learning_count_delta
         if reward < -0.5 and self.trial >= 90:
@@ -276,6 +272,7 @@ class LearningAgent(Agent):
                                                   self.learn_results_without_random_last_10[
                                                       "penalty"].mean(),
                                                   )
+        print self.q_values
 
 
 def run_instance(learning_count_delta, gamma, epsilon, agents):
