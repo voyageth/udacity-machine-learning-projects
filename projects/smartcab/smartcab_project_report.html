@@ -11833,66 +11833,97 @@ Why or why not?</em></p>
 <p>What states have you identified that are appropriate for modeling the smartcab and environment?</p>
 <ul>
 <li>Available environment values<ul>
-<li>light = ['red', 'green']</li>
-<li>oncoming = [None, 'forward', 'left', 'right']</li>
-<li>right = [None, 'forward', 'left', 'right']</li>
-<li>left = [None, 'forward', 'left', 'right']</li>
-<li>next_waypoint = ['forward', 'left', 'right', None]</li>
+<li><code>light</code> = ['red', 'green']</li>
+<li><code>oncoming</code> = [None, 'forward', 'left', 'right']</li>
+<li><code>right</code> = [None, 'forward', 'left', 'right']</li>
+<li><code>left</code> = [None, 'forward', 'left', 'right']</li>
+<li><code>next_waypoint</code> = ['forward', 'left', 'right', None]</li>
 </ul>
 </li>
-<li>I don't use deadline feature when select state. Because if smartcab has no time for reach to destination within deadline can be ignore rule of the road. So, I ignore deadline feature deliberately.</li>
 <li>All available states count is 2 * 4 * 4 * 4 * 4 = 512</li>
 <li>But we do not need all 512 states. I think following 16 states are appropriate for this problem.</li>
-<li>canMove states<ul>
-<li>light = 'green'<ul>
+<li>I don't use <code>deadline</code> feature when select state. <ul>
+<li>Because if smartcab has no time for reach to destination within deadline can be ignore rule of the road. </li>
+<li>So, I ignore deadline feature deliberately.</li>
+</ul>
+</li>
+<li>CanMove states. <ul>
+<li><code>light</code> = 'green'<ul>
 <li><code>GREEN_CAN_LEFT</code><ul>
-<li>None, 'forward', 'right', 'left'</li>
+<li><code>None</code>, <code>'forward'</code>, <code>'right'</code>, <code>'left'</code></li>
 </ul>
 </li>
 <li><code>GREEN_CANT_LEFT</code><ul>
-<li>None, 'forward', 'right'</li>
+<li><code>None</code>, <code>'forward'</code>, <code>'right'</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>light = 'red'<ul>
+<li><code>light</code> = <code>red</code><ul>
 <li><code>RED_CAN_RIGHT</code><ul>
-<li>None, 'right'</li>
+<li><code>None</code>, <code>'right'</code></li>
 </ul>
 </li>
 <li><code>RED_CANT_RIGHT</code><ul>
-<li>None</li>
+<li><code>None</code></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li>Append next_waypoints.</li>
-<li><p>SO, available_states = [</p>
-
-<pre><code>      'GREEN_CAN_LEFT_NEXT_NONE'
-      , 'GREEN_CAN_LEFT_NEXT_FORWARD'
-      , 'GREEN_CAN_LEFT_NEXT_LEFT'
-      , 'GREEN_CAN_LEFT_NEXT_RIGHT'
-
-      , 'GREEN_CANT_LEFT_NEXT_NONE'
-      , 'GREEN_CANT_LEFT_NEXT_FORWARD'
-      , 'GREEN_CANT_LEFT_NEXT_LEFT'
-      , 'GREEN_CANT_LEFT_NEXT_RIGHT'
-
-      , 'RED_CAN_RIGHT_NEXT_NONE'
-      , 'RED_CAN_RIGHT_NEXT_FORWARD'
-      , 'RED_CAN_RIGHT_NEXT_LEFT'
-      , 'RED_CAN_RIGHT_NEXT_RIGHT'
-
-      , 'RED_CANT_RIGHT_NEXT_NONE'
-      , 'RED_CANT_RIGHT_NEXT_FORWARD'
-      , 'RED_CANT_RIGHT_NEXT_LEFT'
-      , 'RED_CANT_RIGHT_NEXT_RIGHT'
-  ]</code></pre>
+<li>CanMove states describe our smartcab can go or not to some direction.<ul>
+<li>It contains <code>light</code>, <code>oncoming</code>, <code>right</code>, <code>left</code> environment values.</li>
+<li>So, I think these values must included to available states.</li>
+</ul>
+</li>
+<li>And append <code>next_waypoint</code>.<ul>
+<li>Because <code>next_waypoint</code> determine smartcab's next action.</li>
+<li>ex. If <code>next_waypoint</code> is not included to states, we can not determine action correctly.<ul>
+<li><code>GREEN_CAN_LEFT</code> state does not describe about which action should be selected.</li>
+<li>If next_waypoint is included to states, <code>GREEN_CAN_LEFT_NEXT_NONE</code> will be select <code>None</code> action.</li>
+<li>Otherwise, <code>GREEN_CAN_LEFT_NEXT_FORWARD</code> should be select <code>'forward'</code> action.</li>
+</ul>
 </li>
 </ul>
+</li>
+<li><p>SO, I determine available_states as</p>
+<ul>
+<li><p>available_states = [</p>
+
+<pre><code>    'GREEN_CAN_LEFT_NEXT_NONE'
+    , 'GREEN_CAN_LEFT_NEXT_FORWARD'
+    , 'GREEN_CAN_LEFT_NEXT_LEFT'
+    , 'GREEN_CAN_LEFT_NEXT_RIGHT'
+
+    , 'GREEN_CANT_LEFT_NEXT_NONE'
+    , 'GREEN_CANT_LEFT_NEXT_FORWARD'
+    , 'GREEN_CANT_LEFT_NEXT_LEFT'
+    , 'GREEN_CANT_LEFT_NEXT_RIGHT'
+
+    , 'RED_CAN_RIGHT_NEXT_NONE'
+    , 'RED_CAN_RIGHT_NEXT_FORWARD'
+    , 'RED_CAN_RIGHT_NEXT_LEFT'
+    , 'RED_CAN_RIGHT_NEXT_RIGHT'
+
+    , 'RED_CANT_RIGHT_NEXT_NONE'
+    , 'RED_CANT_RIGHT_NEXT_FORWARD'
+    , 'RED_CANT_RIGHT_NEXT_LEFT'
+    , 'RED_CANT_RIGHT_NEXT_RIGHT'
+]</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Why do you believe each of these states to be appropriate for this problem?</p>
 <ul>
 <li>I think above 16 states can represent all possible actions.</li>
